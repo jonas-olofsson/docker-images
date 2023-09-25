@@ -19,6 +19,11 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: jonolo75/home-assistant-stable
     - name: Build and push Docker image
       uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
       with:
@@ -26,4 +31,4 @@ jobs:
         file: ./home-assistant/Dockerfile
         push: true
         tags: latest
-        labels: 2023.9
+        labels: ${{ steps.meta.outputs.labels }}
